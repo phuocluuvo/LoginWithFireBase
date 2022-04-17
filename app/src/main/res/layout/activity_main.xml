@@ -38,15 +38,16 @@
         app:srcCompat="@drawable/neutral" />
 
     <Button
-        android:id="@+id/btnSignInLink"
+        android:id="@+id/btnSignIn_main"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="64dp"
-        android:layout_marginLeft="64dp"
         android:layout_marginEnd="64dp"
-        android:layout_marginRight="64dp"
-        android:background="@drawable/button_layout"
         android:padding="15dp"
+        android:shadowColor="#000000"
+        android:shadowDx="5"
+        android:shadowDy="5"
+        android:shadowRadius="15"
         android:text="Sign in"
         app:backgroundTint="#EF77B0"
         app:cornerRadius="50dp"
@@ -58,22 +59,24 @@
         app:strokeWidth="3dp" />
 
     <Button
-        android:id="@+id/btnRegister"
+        android:id="@+id/btnRegister_main"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="64dp"
-        android:layout_marginLeft="64dp"
         android:layout_marginTop="64dp"
         android:layout_marginEnd="64dp"
-        android:layout_marginRight="64dp"
         android:padding="15dp"
+        android:shadowColor="#000000"
+        android:shadowDx="5"
+        android:shadowDy="5"
+        android:shadowRadius="15"
         android:text="register"
         app:backgroundTint="#5393F3"
         app:cornerRadius="50dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnSignInLink"
+        app:layout_constraintTop_toBottomOf="@+id/btnSignIn_main"
         app:strokeColor="#FFFFFF"
         app:strokeWidth="3dp" />
 
@@ -100,5 +103,23 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/guideline2"
         app:srcCompat="@drawable/button_layout" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center|center_horizontal|center_vertical"
+        android:shadowColor="#000000"
+        android:shadowDx="5"
+        android:shadowDy="6"
+        android:shadowRadius="10"
+        android:text="Welcome to\nMy Login App"
+        android:textColor="@color/blue_sky"
+        android:textSize="34sp"
+        android:textStyle="bold|italic"
+        app:layout_constraintBottom_toTopOf="@+id/guideline"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,8 +1,13 @@
 package com.example.myapplication;
 
 public class Account {
-    private String username, password, email;
-    public Account(){}
+    protected String username;
+    protected String password;
+    protected String email;
+
+    public Account() {
+    }
+
     public Account(String username, String password, String email) {
         this.username = username;
         this.password = password;
