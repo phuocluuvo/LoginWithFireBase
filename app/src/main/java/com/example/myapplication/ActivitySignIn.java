@@ -13,29 +13,19 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.android.gms.auth.api.signin.GoogleSignIn;
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
-import com.google.android.gms.auth.api.signin.GoogleSignInClient;
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
-import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.auth.GoogleAuthProvider;
-import com.google.firebase.database.annotations.Nullable;
 
 public class ActivitySignIn extends AppCompatActivity {
     private EditText edtEmail_Login, edtPassword_Login;
     private Button btnSignIn;
     private ProgressBar progressBar;
     private FirebaseAuth mAuth;
-    private TextView twSignInWithGG, twRegister_LogIn;
-    //Login with google
-    GoogleSignInOptions gso;
-    GoogleSignInClient gsc;
+    private TextView  twRegister_LogIn;
+
 
     @Override
     public void onStart() {
@@ -61,17 +51,6 @@ public class ActivitySignIn extends AppCompatActivity {
         progressBar.setVisibility(View.GONE);
 
         btnSignIn = (Button) findViewById(R.id.btnSignIn);
-        //Login with google
-        twSignInWithGG = (TextView) findViewById(R.id.tvwSignGoogle);
-
-        createRequest();
-
-        twSignInWithGG.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                signIn();
-            }
-        });
 
         btnSignIn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -88,54 +67,6 @@ public class ActivitySignIn extends AppCompatActivity {
             }
         });
     }
-
-    private void createRequest() {
-        gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestEmail()
-                .build();
-        gsc = GoogleSignIn.getClient(this, gso);
-    }
-
-    private void signIn() {
-        Intent i = gsc.getSignInIntent();
-        startActivityForResult(i, 100);
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 100) {
-            Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
-            try {
-                GoogleSignInAccount account =
-                        task.getResult(ApiException.class);
-                firebaseAuthWithGoogle(account);
-                startActivity(new Intent(getApplicationContext(), MainActivityDone.class));
-
-            } catch (ApiException e) {
-                e.printStackTrace();
-                Toast.makeText(this, "Error:" + e, Toast.LENGTH_LONG).show();
-            }
-        }
-    }
-
-    private void firebaseAuthWithGoogle(GoogleSignInAccount account) {
-        AuthCredential credential = GoogleAuthProvider.getCredential(account.getIdToken(), null);
-        mAuth.signInWithCredential(credential)
-                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            FirebaseUser user = mAuth.getCurrentUser();
-                            startActivity(new Intent(getApplicationContext(), MainActivityDone.class));
-                        } else {
-                            Toast.makeText(ActivitySignIn.this, "Login Fail! Check your password", Toast.LENGTH_SHORT).show();
-
-                        }
-                    }
-                });
-    }
-
     /**
      * Login using real time database by firebase
      */
