@@ -17,12 +17,14 @@ public class MainActivity extends AppCompatActivity{
         btnSignInLink = (Button) findViewById(R.id.btnSignIn_main);
         btnRegister = (Button) findViewById(R.id.btnRegister_main);
 
+
         btnRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(getBaseContext(), ActivityRegister.class));
             }
         });
+
         btnSignInLink.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

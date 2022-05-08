@@ -12,7 +12,8 @@
         <activity android:name=".MainActivityDone" android:exported="false"/>
         <activity android:name=".ActivityRegister" android:exported="false" />
         <activity android:name=".ActivitySignIn" android:exported="false"/>
-        <activity android:name=".MainActivity">
+        <activity android:name=".MainActivity"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -21,4 +22,6 @@
         </activity>
     </application>
 
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 </manifest>

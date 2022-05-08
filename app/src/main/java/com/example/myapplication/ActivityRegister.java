@@ -59,7 +59,10 @@ public class ActivityRegister extends AppCompatActivity {
         });
     }
 
-
+    /**
+     * Đăng kí user
+     *
+     */
     private void registerUser() {
         String email = edtEmail.getText().toString().trim();
         String name = edtName.getText().toString().trim();
@@ -92,7 +95,6 @@ public class ActivityRegister extends AppCompatActivity {
             edtPassword.requestFocus();
             return;
         }
-
         progressBar.setVisibility(View.VISIBLE);
         //Thêm sự kiện khi tạo xong user
         firebaseAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(
@@ -101,7 +103,7 @@ public class ActivityRegister extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         //nếu xác thực thành công thành công
                         if (task.isSuccessful()) {
-                            Account account = new Account(name, password, email);
+                            Account account = new Account(name, password, email,0,0,0);
 
                             FirebaseDatabase.getInstance()
                                     .getReference("Accounts")//Tên Database

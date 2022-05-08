@@ -2,20 +2,14 @@ package com.example.myapplication;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.android.gms.auth.api.signin.GoogleSignIn;
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
-import com.google.android.gms.auth.api.signin.GoogleSignInClient;
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -26,60 +20,130 @@ import com.google.firebase.database.ValueEventListener;
 
 public class MainActivityDone extends AppCompatActivity {
 
-    private FirebaseUser account;
-    private String userId;
-    private DatabaseReference databaseReference;
-
+    private FirebaseUser fb_user;
+    private String userId, name, email;
+    final private FirebaseDatabase database = FirebaseDatabase.getInstance();
     private Button btnLogOut;
-    //Sign in With Google
-    private GoogleSignInOptions gso;
-    private GoogleSignInClient gsc;
+    private ImageView ivHappy, ivSad, ivNeutral;
+    private TextView tvwHappy, tvwSad, tvwNeutral;
+    private int countHappy;
+    private int countSad = 0;
+    private int countNeutral = 0;
+
+    private Account accountEdit = new Account();
+    private TextView tvwName, tvwEmail;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_done);
+
         btnLogOut = (Button) findViewById(R.id.btnLogOut);
-        btnLogOut.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                logOut();
-                FirebaseAuth.getInstance().signOut();
-                startActivity(new Intent(getBaseContext(), ActivitySignIn.class));
-            }
+        ivHappy = (ImageView) findViewById(R.id.btnHappyFace);
+        ivSad = (ImageView) findViewById(R.id.btnSadFace);
+        ivNeutral = (ImageView) findViewById(R.id.btnNeutral);
+
+
+        final DatabaseReference databaseReference = database.getReference("Accounts");
+        fb_user = FirebaseAuth.getInstance().getCurrentUser();
+        userId = fb_user.getUid();
+
+        ivNeutral.setOnClickListener(view -> {
+            databaseReference.child(userId).addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    if (snapshot.exists()) {
+                        countNeutral++;
+                        snapshot.getRef().child("neutral").setValue(countNeutral);
+                        tvwNeutral.setText(countNeutral + "");
+                        Toast.makeText(MainActivityDone.this, "Update success! " + countNeutral, Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(MainActivityDone.this, "Update unsuccessful!" + countNeutral, Toast.LENGTH_SHORT).show();
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            });
         });
-        databaseReference = FirebaseDatabase.getInstance().getReference("Accounts");
 
-        account = FirebaseAuth.getInstance().getCurrentUser();
+        ivSad.setOnClickListener(view -> {
+            databaseReference.child(userId).addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    if (snapshot.exists()) {
+                        countSad++;
+                        snapshot.getRef().child("sad").setValue(countSad);
+                        tvwSad.setText(countSad + "");
+                        Toast.makeText(MainActivityDone.this, "Update success! " + countSad, Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(MainActivityDone.this, "Update unsuccessful!" + countSad, Toast.LENGTH_SHORT).show();
+                    }
+                }
 
-        userId = account.getUid();
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
 
-        final TextView tvwName = (TextView) findViewById(R.id.tvwName_Done);
-        final TextView tvwEmail = (TextView) findViewById(R.id.tvwEmail_Done);
-        //Sign in With Google
-        gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestEmail()
-                .build();
-        gsc = GoogleSignIn.getClient(this, gso);
+                }
+            });
+        });
 
-        GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
-        if (account != null) {
-            String name = account.getDisplayName();
-            String email = account.getEmail();
-            tvwName.setText(name);
-            tvwEmail.setText(email);
-        }
+        ivHappy.setOnClickListener(view -> {
+            databaseReference.child(userId).addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    if (snapshot.exists()) {
+                        countHappy++;
+                        snapshot.getRef().child("happy").setValue(countHappy);
+                        tvwHappy.setText(countHappy + "");
+                        Toast.makeText(MainActivityDone.this, "Update success! " + countHappy, Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(MainActivityDone.this, "Update unsuccessful!" + countHappy, Toast.LENGTH_SHORT).show();
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            });
+        });
+
+
+        btnLogOut.setOnClickListener(view -> {
+            logOut();
+            FirebaseAuth.getInstance().signOut();
+            startActivity(new Intent(getBaseContext(), ActivitySignIn.class));
+        });
+
+
+        tvwName = (TextView) findViewById(R.id.tvwName_Done);
+        tvwEmail = (TextView) findViewById(R.id.tvwEmail_Done);
+        tvwNeutral = (TextView) findViewById(R.id.tvwNeutral);
+        tvwHappy = (TextView) findViewById(R.id.tvwHappy);
+        tvwSad = (TextView) findViewById(R.id.tvwSad);
+
         //Sign in with account in FireBase
         databaseReference.child(userId).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 Account account = snapshot.getValue(Account.class);
                 if (account != null) {
-                    String name = account.username;
-                    String email = account.email;
+
+                    name = account.getUsername();
+                    email = account.getEmail();
+                    countHappy = account.getHappy();
+                    countNeutral = account.getNeutral();
+                    countSad = account.getSad();
 
                     tvwName.setText(name);
                     tvwEmail.setText(email);
+
+                    tvwSad.setText(countHappy+ "");
+                    tvwNeutral.setText(countNeutral + "");
+                    tvwHappy.setText(countSad + "");
                 }
             }
 
@@ -87,17 +151,12 @@ public class MainActivityDone extends AppCompatActivity {
             public void onCancelled(@NonNull DatabaseError error) {
                 Toast.makeText(MainActivityDone.this, "Error Check again please!", Toast.LENGTH_SHORT).show();
             }
+
         });
     }
 
     private void logOut() {
-        gsc.signOut().addOnCompleteListener(new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(@NonNull Task<Void> task) {
-                FirebaseAuth.getInstance().signOut();
-                finish();
-                startActivity(new Intent(getApplicationContext(), ActivitySignIn.class));
-            }
-        });
+
     }
+
 }
