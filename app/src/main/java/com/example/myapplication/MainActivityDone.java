@@ -158,6 +158,8 @@ public class MainActivityDone extends AppCompatActivity {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
                             if (task.isSuccessful()) {
+                                databaseReference.child(userId).setValue(null);
+                                startActivity(new Intent(MainActivityDone.this,MainActivity.class));
                                 Toast.makeText(MainActivityDone.this, "So sad you deleted me :((", Toast.LENGTH_SHORT).show();
                             }
                         }
