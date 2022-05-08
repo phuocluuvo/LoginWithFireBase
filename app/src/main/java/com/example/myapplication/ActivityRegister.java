@@ -103,7 +103,7 @@ public class ActivityRegister extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         //nếu xác thực thành công thành công
                         if (task.isSuccessful()) {
-                            Account account = new Account(name, password, email,0,0,0);
+                            Account account = new Account(name, password, email,0,0,0,"");
 
                             FirebaseDatabase.getInstance()
                                     .getReference("Accounts")//Tên Database

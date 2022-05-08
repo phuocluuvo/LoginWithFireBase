@@ -13,14 +13,17 @@ public class Account implements Serializable {
     private String password;
     private String email;
     private int neutral, happy, sad;
+    private String yourfeeling;
 
-    public Account(String username, String password, String email, int neutral, int happy, int sad) {
+    public Account(String username, String password, String email, int neutral, int happy, int sad, String yourfeeling) {
         this.username = username;
         this.password = password;
         this.email = email;
         this.neutral = neutral;
         this.happy = happy;
         this.sad = sad;
+        this.yourfeeling = yourfeeling;
+
     }
 
     public int getNeutral() {
@@ -45,6 +48,14 @@ public class Account implements Serializable {
 
     public void setSad(int sad) {
         this.sad = sad;
+    }
+
+    public String getYourfeeling() {
+        return yourfeeling;
+    }
+
+    public void setYourfeeling(String yourfeeling) {
+        this.yourfeeling = yourfeeling;
     }
 
     public Account() {

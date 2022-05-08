@@ -3,6 +3,7 @@ package com.example.myapplication;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -21,14 +22,15 @@ import com.google.firebase.database.ValueEventListener;
 public class MainActivityDone extends AppCompatActivity {
 
     private FirebaseUser fb_user;
-    private String userId, name, email;
+    private String userId, name, email, yourfeeling;
     final private FirebaseDatabase database = FirebaseDatabase.getInstance();
-    private Button btnLogOut;
+    private Button btnLogOut, btnSaveYourFeeling;
     private ImageView ivHappy, ivSad, ivNeutral;
     private TextView tvwHappy, tvwSad, tvwNeutral;
     private int countHappy;
     private int countSad = 0;
     private int countNeutral = 0;
+    private EditText edtYourFeeling;
 
     private Account accountEdit = new Account();
     private TextView tvwName, tvwEmail;
@@ -38,6 +40,8 @@ public class MainActivityDone extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_done);
 
+        btnSaveYourFeeling = (Button) findViewById(R.id.btnSaveYourFeeling);
+        edtYourFeeling = (EditText) findViewById(R.id.edtFeeling);
         btnLogOut = (Button) findViewById(R.id.btnLogOut);
         ivHappy = (ImageView) findViewById(R.id.btnHappyFace);
         ivSad = (ImageView) findViewById(R.id.btnSadFace);
@@ -111,9 +115,28 @@ public class MainActivityDone extends AppCompatActivity {
             });
         });
 
+        btnSaveYourFeeling.setOnClickListener(view->{
+            databaseReference.child(userId).addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    if (snapshot.exists()) {
+                        yourfeeling = edtYourFeeling.getText().toString();
+                        snapshot.getRef().child("yourfeeling").setValue(yourfeeling);
+                        Toast.makeText(MainActivityDone.this, "Save success! ", Toast.LENGTH_SHORT).show();
+
+                    } else {
+                        Toast.makeText(MainActivityDone.this, "Save unsuccessful!", Toast.LENGTH_SHORT).show();
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            });
+        });
 
         btnLogOut.setOnClickListener(view -> {
-            logOut();
             FirebaseAuth.getInstance().signOut();
             startActivity(new Intent(getBaseContext(), ActivitySignIn.class));
         });
@@ -137,6 +160,7 @@ public class MainActivityDone extends AppCompatActivity {
                     countHappy = account.getHappy();
                     countNeutral = account.getNeutral();
                     countSad = account.getSad();
+                    yourfeeling = account.getYourfeeling();
 
                     tvwName.setText(name);
                     tvwEmail.setText(email);
@@ -144,6 +168,7 @@ public class MainActivityDone extends AppCompatActivity {
                     tvwSad.setText(countHappy+ "");
                     tvwNeutral.setText(countNeutral + "");
                     tvwHappy.setText(countSad + "");
+                    edtYourFeeling.setText(yourfeeling);
                 }
             }
 
@@ -154,9 +179,4 @@ public class MainActivityDone extends AppCompatActivity {
 
         });
     }
-
-    private void logOut() {
-
-    }
-
 }
