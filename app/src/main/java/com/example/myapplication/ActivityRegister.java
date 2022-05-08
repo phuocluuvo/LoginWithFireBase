@@ -96,6 +96,7 @@ public class ActivityRegister extends AppCompatActivity {
             return;
         }
         progressBar.setVisibility(View.VISIBLE);
+
         //Thêm sự kiện khi tạo xong user
         firebaseAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(
                 new OnCompleteListener<AuthResult>() {

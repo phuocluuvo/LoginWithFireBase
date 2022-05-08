@@ -1,5 +1,6 @@
 package com.example.myapplication;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
@@ -9,8 +10,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -24,7 +28,7 @@ public class MainActivityDone extends AppCompatActivity {
     private FirebaseUser fb_user;
     private String userId, name, email, yourfeeling;
     final private FirebaseDatabase database = FirebaseDatabase.getInstance();
-    private Button btnLogOut, btnSaveYourFeeling;
+    private Button btnLogOut, btnSaveYourFeeling, btnDeleteUser;
     private ImageView ivHappy, ivSad, ivNeutral;
     private TextView tvwHappy, tvwSad, tvwNeutral;
     private int countHappy;
@@ -42,6 +46,7 @@ public class MainActivityDone extends AppCompatActivity {
 
         btnSaveYourFeeling = (Button) findViewById(R.id.btnSaveYourFeeling);
         edtYourFeeling = (EditText) findViewById(R.id.edtFeeling);
+        btnDeleteUser = (Button) findViewById(R.id.btnDeleteUser);
         btnLogOut = (Button) findViewById(R.id.btnLogOut);
         ivHappy = (ImageView) findViewById(R.id.btnHappyFace);
         ivSad = (ImageView) findViewById(R.id.btnSadFace);
@@ -115,7 +120,7 @@ public class MainActivityDone extends AppCompatActivity {
             });
         });
 
-        btnSaveYourFeeling.setOnClickListener(view->{
+        btnSaveYourFeeling.setOnClickListener(view -> {
             databaseReference.child(userId).addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -139,6 +144,37 @@ public class MainActivityDone extends AppCompatActivity {
         btnLogOut.setOnClickListener(view -> {
             FirebaseAuth.getInstance().signOut();
             startActivity(new Intent(getBaseContext(), ActivitySignIn.class));
+        });
+
+        btnDeleteUser.setOnClickListener(view -> {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle("Confirm");
+            builder.setMessage("Are you sure? You want to delete this account?");
+            builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    //xoa user////////////////////////////////////
+                    fb_user.delete().addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            if (task.isSuccessful()) {
+                                Toast.makeText(MainActivityDone.this, "So sad you deleted me :((", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    });
+                    /////////////////////////////////////////////////
+                }
+
+            });
+            builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    dialogInterface.dismiss();
+                }
+            });
+
+            AlertDialog alertDialog = builder.create();
+            alertDialog.show();
         });
 
 
@@ -165,7 +201,7 @@ public class MainActivityDone extends AppCompatActivity {
                     tvwName.setText(name);
                     tvwEmail.setText(email);
 
-                    tvwSad.setText(countHappy+ "");
+                    tvwSad.setText(countHappy + "");
                     tvwNeutral.setText(countNeutral + "");
                     tvwHappy.setText(countSad + "");
                     edtYourFeeling.setText(yourfeeling);
