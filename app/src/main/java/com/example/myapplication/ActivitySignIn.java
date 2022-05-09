@@ -26,8 +26,6 @@ public class ActivitySignIn extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private TextView  twRegister_LogIn;
 
-
-
     @Override
     public void onStart() {
         super.onStart();
@@ -100,15 +98,15 @@ public class ActivitySignIn extends AppCompatActivity {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()) {
-                    //Xác nhận email
-                    FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
                     startActivity(new Intent(getBaseContext(), MainActivityDone.class));
-//                    if (user.isEmailVerified())
-//                        startActivity(new Intent(getBaseContext(), MainActivityDone.class));
-//                    else {
-//                        user.sendEmailVerification();
-//                        Toast.makeText(ActivitySignIn.this, "Check your email to verify!", Toast.LENGTH_LONG).show();
-//                    }
+                    //Xác nhận email
+/*                   FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                    if (user.isEmailVerified())
+                        startActivity(new Intent(getBaseContext(), MainActivityDone.class));
+                    else {
+                        user.sendEmailVerification();
+                        Toast.makeText(ActivitySignIn.this, "Check your email to verify!", Toast.LENGTH_LONG).show();
+                    }*/
                     progressBar.setVisibility(View.GONE);
                 } else {
                     Toast.makeText(ActivitySignIn.this, "Login Fail! Check your password", Toast.LENGTH_SHORT).show();

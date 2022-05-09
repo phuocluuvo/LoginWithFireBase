@@ -26,6 +26,7 @@ public class Account implements Serializable {
 
     }
 
+
     public int getNeutral() {
         return neutral;
     }

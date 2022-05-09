@@ -13,6 +13,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MyApplication">
         <activity
+            android:name=".ListAccount"
+            android:exported="false" />
+        <activity
             android:name=".MainActivityDone"
             android:exported="false" />
         <activity

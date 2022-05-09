@@ -104,13 +104,14 @@ public class ActivityRegister extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         //nếu xác thực thành công thành công
                         if (task.isSuccessful()) {
-                            Account account = new Account(name, password, email,0,0,0,"");
+                            //Account account = new Account(name, password, email,0,0,0,"");// nếu muốn khởi tạo giá trị đầu thì mở cái này ra
+                            Account account = new Account();
                             FirebaseDatabase.getInstance()
                                     .getReference("Accounts")//Tên Database
                                     .child(FirebaseAuth
                                             .getInstance()
-                                            .getCurrentUser().getUid())//Thêm id vào
-                                    .setValue(account)
+                                            .getCurrentUser().getUid())//id phân biệt fire base user với authentication
+                                    .setValue(account)//tạo dữ liệu rỗng trước nếu không thì tạo dữ liệu ban đầu là account ở trên
                                     .addOnCompleteListener(new OnCompleteListener<Void>() {
                                         @Override
                                         public void onComplete(@NonNull Task<Void> task) {

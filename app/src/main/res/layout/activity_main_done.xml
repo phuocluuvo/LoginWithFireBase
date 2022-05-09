@@ -11,7 +11,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_end="429dp" />
+        app:layout_constraintGuide_end="380dp" />
 
     <Button
         android:id="@+id/btnFinish"
@@ -19,6 +19,7 @@
         android:layout_height="wrap_content"
         android:background="@color/pink_lotus"
         android:text="FINISH"
+        android:textColor="#311B92"
         app:backgroundTint="@color/pink_lotus"
         app:cornerRadius="50dp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -31,7 +32,7 @@
         android:id="@+id/imageView14"
         android:layout_width="1500dp"
         android:layout_height="500dp"
-        android:layout_marginTop="188dp"
+        android:layout_marginTop="130dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.49"
         app:layout_constraintStart_toStartOf="parent"
@@ -43,7 +44,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_end="249dp" />
+        app:layout_constraintGuide_end="200dp" />
 
     <TextView
         android:id="@+id/tvwTouchMe"
@@ -66,25 +67,26 @@
         android:id="@+id/btnLogOut"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
+        android:layout_marginStart="16dp"
         android:background="#F44336"
         android:text="Logout"
+        android:textColor="#000000"
         app:backgroundTint="#F44336"
         app:cornerRadius="50dp"
-        app:layout_constraintStart_toStartOf="@+id/btnFinish"
-        app:layout_constraintTop_toBottomOf="@+id/btnFinish"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/imageView14"
         app:strokeColor="#FFF"
         app:strokeWidth="10px" />
 
-    <TextView
+    <EditText
         android:id="@+id/tvwName_Done"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="32dp"
-        android:text="Name"
+        android:layout_marginBottom="16dp"
+        android:hint="Your New Name"
         android:textSize="24sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/guideline6"
+        app:layout_constraintBottom_toTopOf="@+id/edtFeeling"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
@@ -97,15 +99,16 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
-    <TextView
+    <EditText
         android:id="@+id/tvwEmail_Done"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:text="TextView"
-        app:layout_constraintBottom_toBottomOf="@+id/btnLogOut"
+        android:hint="Your Email"
+        app:layout_constraintBottom_toTopOf="@+id/btnSaveNewInfo"
+        app:layout_constraintEnd_toEndOf="@+id/tvwName_Done"
         app:layout_constraintStart_toEndOf="@+id/btnLogOut"
-        app:layout_constraintTop_toTopOf="@+id/btnLogOut" />
+        app:layout_constraintStart_toStartOf="@+id/tvwName_Done"
+        app:layout_constraintTop_toBottomOf="@+id/edtFeeling" />
 
     <ImageView
         android:id="@+id/btnNeutral"
@@ -113,6 +116,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="64dp"
         android:clickable="true"
+        android:contentDescription="@string/app_name"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvwTouchMe"
         app:srcCompat="@drawable/neutral" />
@@ -174,23 +178,12 @@
         android:id="@+id/edtFeeling"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
         android:ems="10"
         android:gravity="center|start|top"
         android:hint="Write your feeling today"
         android:inputType="textMultiLine"
-        app:layout_constraintBottom_toTopOf="@+id/btnSaveYourFeeling"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvwName_Done" />
-
-    <Button
-        android:id="@+id/btnSaveYourFeeling"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
-        android:text="Save Your Feeling"
-        app:backgroundTint="@color/blue_sky"
-        app:layout_constraintBottom_toTopOf="@+id/guideline7"
+        app:layout_constraintBottom_toTopOf="@+id/guideline6"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
@@ -198,10 +191,47 @@
         android:id="@+id/btnDeleteUser"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
         android:text="Delete user"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/btnLogOut" />
+
+    <TextView
+        android:id="@+id/tvwListLink"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:text="Watch all your feeling"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnLogOut" />
+        app:layout_constraintTop_toBottomOf="@+id/btnFinish" />
+
+    <Button
+        android:id="@+id/btnSaveNewInfo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="add"
+        app:layout_constraintBottom_toTopOf="@+id/btnFinish"
+        app:layout_constraintEnd_toEndOf="@+id/tvwEmail_Done"
+        app:layout_constraintStart_toStartOf="@+id/tvwEmail_Done"
+        app:layout_constraintTop_toBottomOf="@+id/edtFeeling" />
+
+    <Button
+        android:id="@+id/btnUpdate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Update"
+        app:layout_constraintBottom_toBottomOf="@+id/btnSaveNewInfo"
+        app:layout_constraintEnd_toStartOf="@+id/btnSaveNewInfo"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/btnDelete"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Delete"
+        app:layout_constraintBottom_toBottomOf="@+id/btnSaveNewInfo"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/btnSaveNewInfo" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
